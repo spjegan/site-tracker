@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>root</artifactId>
+        <groupId>com.tr.sitetracker</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>web</artifactId>
+    <packaging>war</packaging>
+
+    <properties>
+        <spring-version>4.1.6.RELEASE</spring-version>
+        <resteasy-version>3.0.11.Final</resteasy-version>
+        <dbcp-version>2.1</dbcp-version>
+        <mysql-connector-version>5.1.35</mysql-connector-version>
+        <h2-version>1.4.187</h2-version>
+        <junit-version>4.12</junit-version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.tr.sitetracker</groupId>
+            <artifactId>commons</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tr.sitetracker</groupId>
+            <artifactId>persistence</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Spring Dependencies -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>${dbcp-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jackson2-provider</artifactId>
+            <version>${resteasy-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>${resteasy-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-spring</artifactId>
+            <version>${resteasy-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxb-provider</artifactId>
+            <version>${resteasy-version}</version>
+        </dependency>
+        
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector-version}</version>
+		</dependency>
+        
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit-version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>sitetracker</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <webXml>WebContent/WEB-INF/web.xml</webXml>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/resources</directory>
+                        </resource>
+                        <resource>
+                            <directory>WebContent</directory>
+                            <targetPath>/</targetPath>
+                            <includes>
+                                <include>index.html</include>
+                            </includes>
+                        </resource>
+                        <resource>
+                            <directory>WebContent/WEB-INF</directory>
+                            <targetPath>WEB-INF</targetPath>
+                            <includes>
+                                <include>jboss-deployment-structure.xml</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
