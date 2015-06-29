@@ -1,6 +1,0 @@
-com/tr/commons/utils/ErrorConstants.class
-com/tr/commons/utils/AssertUtils.class
-com/tr/commons/utils/Constants.class
-com/tr/commons/logging/SimpleLogger.class
-com/tr/commons/logging/LoggerFactory.class
-com/tr/commons/logging/ILogger.class
