@@ -2,6 +2,8 @@ package com.tr.sitetracker.service.domain;
 
 import static com.tr.commons.utils.AssertUtils.assertNotNullOrEmpty;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +12,10 @@ import com.tr.commons.logging.LoggerFactory;
 import com.tr.sitetracker.domain.Connection;
 import com.tr.sitetracker.domain.IConnection;
 import com.tr.sitetracker.domain.ISite;
+import com.tr.sitetracker.domain.Site;
+import com.tr.sitetracker.exception.ResourceNotFoundException;
 import com.tr.sitetracker.exception.ValidationException;
-import com.tr.sitetracker.repository.IConnectionRepository;
-import com.tr.sitetracker.repository.ISiteRepository;
+import com.tr.sitetracker.repository.ISiteTrackerRepository;
 
 /**
  * Created by Jegan on 6/18/2015.
@@ -20,44 +23,97 @@ import com.tr.sitetracker.repository.ISiteRepository;
 @Service
 public class SiteTrackerDomainServiceImpl implements ISiteTrackerDomainService {
 
-	private ISiteRepository siteRepository;
+	private ISiteTrackerRepository siteTrackerRepository;
 
-	private IConnectionRepository connectionRepository;
-	
-	private static final ILogger logger = LoggerFactory.getLogger(SiteTrackerDomainServiceImpl.class);
+	private static final ILogger logger = LoggerFactory
+			.getLogger(SiteTrackerDomainServiceImpl.class);
 
 	@Autowired
-	public SiteTrackerDomainServiceImpl(ISiteRepository siteRepository,
-			IConnectionRepository connectionRepository) {
-		this.siteRepository = siteRepository;
-		this.connectionRepository = connectionRepository;
+	public SiteTrackerDomainServiceImpl(ISiteTrackerRepository siteRepository) {
+		this.siteTrackerRepository = siteRepository;
 	}
 
 	@Override
 	public String createSite(ISite site) {
-		siteRepository.save(site);
+		checkDuplicateName(site.getName());
+		siteTrackerRepository.save(site);
+
 		return site.getId();
 	}
 
 	@Override
-	public String addConnection(String fromSiteId, String toSiteId,
+	public String addConnection(String fromSiteId, String toSiteName,
 			double distance) {
-		assertNotNullOrEmpty(fromSiteId, "From site id cannot be null or empty", fromSiteId);
-		assertNotNullOrEmpty(toSiteId, "To site id cannot be null or empty", toSiteId);
-		
-		ISite fromSite = siteRepository.findById(fromSiteId);
-		if (null == fromSite) {
-			logger.error("Unknown from site {}", fromSiteId);
-			throw new ValidationException("Unknown site with id " + fromSiteId);
-		}
-		ISite toSite = siteRepository.findById(toSiteId);
+		assertNotNullOrEmpty(fromSiteId,
+				"From site id cannot be null or empty", fromSiteId);
+		assertNotNullOrEmpty(toSiteName,
+				"To site name cannot be null or empty", toSiteName);
+
+		ISite fromSite = nullSafeGet(fromSiteId);
+
+		ISite toSite = siteTrackerRepository.findByIdOrName(toSiteName);
 		if (null == toSite) {
-			logger.error("Unknown to site {}", toSiteId);
-			throw new ValidationException("Unknown site with id " + toSiteId);
-		}		
+			logger.error("Unknown to site {}", toSiteName);
+			throw new ResourceNotFoundException("Unknown site with name "
+					+ toSiteName);
+		}
 
 		IConnection connection = new Connection(fromSite, toSite, distance);
-		connectionRepository.save(connection);
+		siteTrackerRepository.save(connection);
 		return connection.getId();
+	}
+
+	@Override
+	public ISite getSite(String siteId) {
+		assertNotNullOrEmpty(siteId, "Site id cannot be null or empty", siteId);
+		return nullSafeGet(siteId);
+	}
+
+	@Override
+	public List<IConnection> getConnections(String siteId) {
+		assertNotNullOrEmpty(siteId, "Site id cannot be null or empty", siteId);
+		return siteTrackerRepository.getSiteConnections(siteId);
+	}
+
+	@Override
+	public List<ISite> getAllSites() {
+		return siteTrackerRepository.getAllSites();
+	}
+
+	@Override
+	public void updateSite(String siteId, String newName) {
+		assertNotNullOrEmpty(siteId,
+				"Site id cannot be null or empty", siteId);
+		assertNotNullOrEmpty(newName,
+				"Site new name cannot be null or empty", newName);
+		
+		Site site = (Site) siteTrackerRepository.findById(siteId);
+		if (null == site) {
+			logger.error("Unknown from site {}", siteId);
+			throw new ResourceNotFoundException("Unknown site with id "
+					+ siteId);
+		}
+
+		checkDuplicateName(newName);
+		
+		site.setName(newName);
+		siteTrackerRepository.merge(site);
+	}
+
+	private void checkDuplicateName(String siteName) {
+		if (null != siteTrackerRepository.findByName(siteName)) {
+			logger.error("Site with the name {} already exists", siteName);
+			throw new ValidationException("Duplicate site name " + siteName);
+		}
+	}
+
+	private ISite nullSafeGet(String siteId) {
+		ISite fromSite = siteTrackerRepository.findById(siteId);
+		if (null == fromSite) {
+			logger.error("Unknown from site {}", siteId);
+			throw new ResourceNotFoundException("Unknown site with id "
+					+ siteId);
+		}
+		return fromSite;
 	}
 }

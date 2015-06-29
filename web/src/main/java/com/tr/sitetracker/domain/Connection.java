@@ -1,6 +1,9 @@
 package com.tr.sitetracker.domain;
 
 import javax.persistence.*;
+
+import com.tr.commons.utils.Constants;
+
 import java.io.Serializable;
 
 /**
@@ -8,6 +11,8 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "site_connection_t")
+@NamedQueries({
+	@NamedQuery(name = Constants.QUERY_GET_SITE_CONNECTIONS, query = "from Connection where fromSite.id = :fromSiteId") })
 public class Connection implements Serializable, IConnection {
 
 	private static final long serialVersionUID = 1100796287664020244L;

@@ -18,4 +18,9 @@ public class Constants {
     public static final String QUERY_GET_ALL_SITES = "getAllSites";
     
     public static final String QUERY_FIND_SITE_BY_NAME = "findSiteByName";
+    
+    public static final String QUERY_FIND_SITE_BY_NAME_OR_ID = "findSiteByNameOrId";
+    
+    public static final String QUERY_GET_SITE_CONNECTIONS = "getAllSiteConnections";
+    
 }

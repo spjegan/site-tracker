@@ -1,26 +1,68 @@
 package com.tr.sitetracker.dto;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * Created by Jegan on 6/18/2015.
  */
 public class SiteInfo {
+	
+	private String siteId;
 
-    private String name;
+    private String siteName;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<ConnectionInfo> connections;
+    
+    public SiteInfo() {
+    	this.connections = new ArrayList<>();
+    }
+    
+    public SiteInfo(String name) {
+    	this();
+    	this.siteName = name;
+    }
+    
+	/**
+	 * @return the siteId
+	 */
+	public String getSiteId() {
+		return siteId;
+	}
 
-    public String getName() {
-        return name;
+	/**
+	 * @param siteId the siteId to set
+	 */
+	public void setSiteId(String siteId) {
+		this.siteId = siteId;
+	}    
+
+    public String getSiteName() {
+        return siteName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSiteName(String name) {
+        this.siteName = name;
+    }
+    
+    public void addConnection(ConnectionInfo connectionInfo) {
+    	if (null != connectionInfo) {
+    		this.connections.add(connectionInfo);
+    	}
+    }
+    
+    public void addAllConnections(List<ConnectionInfo> connections) {
+    	if (null != connections) {
+    		this.connections.addAll(connections);
+    	}
     }
 
     public List<ConnectionInfo> getConnections() {
-        return connections;
+        return Collections.unmodifiableList(connections);
     }
 
     public void setConnections(List<ConnectionInfo> connections) {
@@ -34,14 +76,14 @@ public class SiteInfo {
 
         SiteInfo siteInfo = (SiteInfo) o;
 
-        if (name != null ? !name.equals(siteInfo.name) : siteInfo.name != null) return false;
+        if (siteName != null ? !siteName.equals(siteInfo.siteName) : siteInfo.siteName != null) return false;
         return !(connections != null ? !connections.equals(siteInfo.connections) : siteInfo.connections != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = siteName != null ? siteName.hashCode() : 0;
         result = 31 * result + (connections != null ? connections.hashCode() : 0);
         return result;
     }
@@ -49,9 +91,10 @@ public class SiteInfo {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("SiteInfo{");
-        sb.append("name='").append(name).append('\'');
+        sb.append("name='").append(siteName).append('\'');
         sb.append(", connections=").append(connections);
         sb.append('}');
         return sb.toString();
     }
+
 }

@@ -4,10 +4,35 @@ package com.tr.sitetracker.dto;
  * Created by Jegan on 6/19/2015.
  */
 public class ConnectionInfo {
+	
+	private String id;
 
     private String siteName;
 
     private double distance;
+    
+    public ConnectionInfo() {
+    	
+    }
+    
+    public ConnectionInfo(String siteName, double distance) {
+    	this.siteName = siteName;
+    	this.distance = distance;
+    }
+    
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
 
     public String getSiteName() {
         return siteName;

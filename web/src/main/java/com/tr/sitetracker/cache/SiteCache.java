@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tr.sitetracker.domain.ISite;
-import com.tr.sitetracker.repository.ISiteRepository;
+import com.tr.sitetracker.repository.ISiteTrackerRepository;
 
 /**
  * Created by Jegan on 6/19/2015.
@@ -21,7 +21,7 @@ public class SiteCache implements ISiteCache {
 	private ConcurrentMap<String, ISite> idToSite;
 	
 	@Autowired
-	private ISiteRepository siteRepository;
+	private ISiteTrackerRepository siteRepository;
 
     private static final ISiteCache INSTANCE = new SiteCache();
     

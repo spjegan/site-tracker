@@ -22,7 +22,8 @@ import com.tr.commons.utils.Constants;
 @Table(name = "site_t")
 @NamedQueries({
 		@NamedQuery(name = Constants.QUERY_GET_ALL_SITES, query = "from Site site"),
-		@NamedQuery(name = Constants.QUERY_FIND_SITE_BY_NAME, query = "from Site where name = :name") })
+		@NamedQuery(name = Constants.QUERY_FIND_SITE_BY_NAME, query = "from Site where name = :name"),
+		@NamedQuery(name = Constants.QUERY_FIND_SITE_BY_NAME_OR_ID, query = "from Site where name = :name or id = :id")})
 public class Site implements Serializable, ISite {
 
 	private static final long serialVersionUID = -5317057584625311533L;
