@@ -10,8 +10,9 @@ APIs implemented
 
 REST API Details
 1. Create Site
-URI
+
 POST	http://localhost:8080/sitetracker/rest/site/
+
 Request
 ```json
 {
@@ -49,7 +50,7 @@ Response
 ```
 
 2. Get Site Details
-URI
+
 	GET	http://localhost:8080/sitetracker/rest/site/{siteId}
 Response
 ```json
@@ -69,7 +70,7 @@ Response
 ```
 
 3. Update Site Name
-URI
+
 	PUT	http://localhost:8080/sitetracker/rest/site/{siteId}
 Request
 ```json
@@ -79,8 +80,9 @@ Request
 ```
 
 4. Add Connection to Site
-URI
+
 PUT 	http://localhost:8080/sitetracker/rest/site/{siteId}/connection
+
 Request
 ```json
 {
@@ -89,8 +91,9 @@ Request
 }
 ```
 5. Get All Sites
-URI
+
 GET	http://localhost:8080/sitetracker/rest/site/
+
 Response
 ```json
 [
@@ -111,6 +114,6 @@ Things to be implemented
 4. More Logging.
 5. Spring AOP for Application Logging
 6. More data validations
+
 Schema Creation
 Use the below attached SQL file to create the schema. This is for MySql.
-
